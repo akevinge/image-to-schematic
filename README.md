@@ -1,15 +1,16 @@
 # Image to Minecraft... Image
 
 A (currently partial-functional) C++ Learning Project
-** You must have Minecraft installed **
 
 ### Before
 ![Before](/assets/images/before.png)
 
-### After
+### After (click for zoom)
 ![After](/assets/images/after.png)
 
 ## How to run
+
+**You must have Minecraft installed**
 
 Load textures and extract colors
 
