@@ -18,10 +18,5 @@ $(OBJS_DIR)/%.o: %.cpp
 build: $(BIN) $(CPP_OBJ_FILES)
 	$(CCPP) -o $(BIN)/main $(CPP_OBJ_FILES) $(CCPP_FLAGS) 
 
-run:
-	$(BIN)/main
-
 clean:
 	rm -dfr $(OBJS_DIR) && rm -dfr $(BIN)
-
-all: clean build run

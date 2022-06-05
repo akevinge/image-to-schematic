@@ -78,4 +78,4 @@ make clean > /dev/null
 
 echo -e "building...\n"
 make build > /dev/null
-$root_path/bin/main $used_texture_path $root_path/../colors.json 500 # create colors.json up 1 from root, algorithm repeats 500 times
+$root_path/bin/main $used_texture_path $root_path/../colors-$use_version.json 500 # create colors.json up 1 from root, algorithm repeats 500 times

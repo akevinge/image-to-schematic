@@ -12,18 +12,38 @@
 #include "loader.hpp"
 #include "stb_image_write.h"
 
-#define IMAGE_HPP
-
 int color_dist(rgba x, rgba y) {
     return std::pow(x.r - y.r, 2) + std::pow(x.g - y.g, 2) + std::pow(x.b - y.b, 2);
 }
 
-int main() {
-    auto loader = load_block_colors("../textures-1.18.2", "../colors.json");
+struct args {
+    std::string textures_dir;
+    std::string colors;
+    std::string image_path;
+    std::string out_dir;
+};
+
+std::optional<args> parse_args(char* argv[]) {
+    try {
+        return args{argv[1], argv[2], argv[3], argv[4]};
+    } catch (const std::exception& e) {
+        return std::nullopt;
+    }
+}
+
+int main(int argc, char* argv[]) {
+    auto args = parse_args(argv);
+    if (!args.has_value()) {
+        print_error("invalid arguments");
+        return 1;
+    }
+
+    auto loader = load_block_colors(args->textures_dir, args->colors);
     if (!loader.has_value()) return 1;
+
     const auto& blocks = loader.value();
 
-    auto loaded_img = load_img("./test-img.png");
+    auto loaded_img = load_img(args->image_path);
 
     if (loaded_img.has_value()) {
         const auto pixels = loaded_img->extract_pixels();
@@ -31,7 +51,7 @@ int main() {
         u_char* new_img_ptr = static_cast<u_char*>(malloc(loaded_img->w * loaded_img->h * 16 * 16 * loaded_img->comp));
         img new_img(loaded_img->w * 16, loaded_img->h * 16, loaded_img->comp, new_img_ptr);
 
-        std::ofstream report_file("./report.txt");
+        std::ofstream report_file(args->out_dir + "/report.txt");
 
         for (int x{}; x < loaded_img->w; x++) {
             for (int y{}; y < loaded_img->h; y++) {
@@ -62,7 +82,7 @@ int main() {
                 new_img.insert_img_at(b.image, x * 16, y * 16);
             }
         }
-        stbi_write_png("./output.png", new_img.w, new_img.h, new_img.comp, new_img.data.get(), new_img.w * new_img.comp);
+        stbi_write_png((args->out_dir + "/output.png").c_str(), new_img.w, new_img.h, new_img.comp, new_img.data.get(), new_img.w * new_img.comp);
         report_file.close();
     } else {
         print_error("couldn't load textures");
