@@ -2,6 +2,8 @@
 
 A (currently partial-functional) C++ Learning Project
 
+**The algorithms implemented in this program are brute force and quickly consume memory. Small images are recommended**
+
 Libs:
   - stb_image.h: https://github.com/nothings/stb
   - stb_image_write.h: https://github.com/nothings/stb
